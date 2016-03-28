@@ -9,6 +9,9 @@ import java.util.Map;
 import environnement.Action;
 import environnement.Environnement;
 import environnement.Etat;
+
+import javax.swing.*;
+
 /**
  * 
  * @author laetitiamatignon
@@ -28,7 +31,7 @@ public class QLearningAgent extends RLAgent{
 			Environnement _env) {
 		super(alpha, gamma,_env);
 		//TODO
-		map = new HashMap<Etat, HashMap<Action, Double>>();
+		map = new HashMap<>();
 	}
 
 
@@ -58,9 +61,10 @@ public class QLearningAgent extends RLAgent{
 	@Override
 	public double getValeur(Etat e) {
 		Double res = 0.;
-		for(Double value : map.get(e).values())
-			if (res < value)
-				res = value;
+		if(map.get(e) != null)
+			for(Double value : map.get(e).values())
+				if (res < value)
+					res = value;
 		return res;
 		
 	}
@@ -73,6 +77,10 @@ public class QLearningAgent extends RLAgent{
 	 */
 	@Override
 	public double getQValeur(Etat e, Action a) {
+		if((map.get(e) != null) && (map.get(e).get(a) != null)){
+			return map.get(e).get(a);
+		}
+		setQValeur(e, a, 0.0);
 		return map.get(e).get(a);
 	}
 	
@@ -131,7 +139,7 @@ public class QLearningAgent extends RLAgent{
 		super.reset();
 		this.episodeNb =0;
 		//TODO
-		
+		map = new HashMap<>();
 		
 		this.notifyObs();
 	}
