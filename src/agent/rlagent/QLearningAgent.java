@@ -47,8 +47,8 @@ public class QLearningAgent extends RLAgent{
 		//TODO
 		List<Action> res = new ArrayList<>();
 		Double valueMax = this.getValeur(e);
-		for(Map.Entry<Action, Double> entry : map.get(e).entrySet())
-			if(valueMax.equals(entry.getValue()))
+		for (Map.Entry<Action, Double> entry : map.get(e).entrySet())
+			if (valueMax.equals(entry.getValue()))
 				res.add(entry.getKey());
 		return res;
 		
@@ -95,8 +95,9 @@ public class QLearningAgent extends RLAgent{
 			couple.put(a,d);
 			map.put(e, couple);
 		}
-		map.get(e).put(a,d);
-
+		else {
+			map.get(e).put(a, d);
+		}
 		//mise a jour vmin et vmax pour affichage gradient de couleur
 		//...
 
@@ -122,7 +123,7 @@ public class QLearningAgent extends RLAgent{
 	@Override
 	public void endStep(Etat e, Action a, Etat esuivant, double reward) {
 		//TODO
-		this.setQValeur(e, a, (1-alpha)*map.get(e).get(a) + alpha*(reward + gamma * this.getValeur(esuivant)));
+		this.setQValeur(e, a, (1-alpha)*this.getQValeur(e,a) + alpha*(reward + gamma * this.getValeur(esuivant)));
 	}
 
 	@Override
