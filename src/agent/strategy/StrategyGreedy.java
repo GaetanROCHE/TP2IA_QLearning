@@ -14,8 +14,9 @@ import environnement.Etat;
  */
 public class StrategyGreedy extends StrategyExploration{
 	//TODO
-	//...
-	
+
+	Double epsilon;
+
 	private Random rand=new Random();
 	
 	
@@ -23,20 +24,31 @@ public class StrategyGreedy extends StrategyExploration{
 	public StrategyGreedy(RLAgent agent,double epsilon) {
 		super(agent);
 		//TODO
-		//...
+		this.epsilon = epsilon;
 	}
 
 	/**
+	 * @brief elle a une probabilité epsilon de renvoyer une action aléatoire
+	 * et une probabilité 1-epsilon de suivre la politique.
 	 * @return action selectionnee par la strategie d'exploration
 	 */
 	@Override
 	public Action getAction(Etat _e) {
 		//VOTRE CODE
 		//getAction renvoi null si _e absorbant
-		
-		
-		return null;
-		
+		if(this.getAgent().getEnv().getActionsPossibles(_e) == null){
+			return null;
+		}
+		else{
+			if(rand.nextDouble() < epsilon){
+				int choix = rand.nextInt(this.getAgent().getEnv().getActionsPossibles(_e).size());
+				return this.getAgent().getEnv().getActionsPossibles(_e).get(choix);
+			}else{
+				int alea = rand.nextInt(this.getAgent().getPolitique(_e).size());
+				return this.getAgent().getPolitique(_e).get(alea);
+			}
+
+		}
 	}
 
 
