@@ -35,8 +35,12 @@ public class StrategyGreedy extends StrategyExploration{
 	@Override
 	public Action getAction(Etat _e) {
 		//VOTRE CODE
+		rand = new Random();
+		//System.out.println("actions possibles : " + this.getAgent().getEnv().getActionsPossibles(_e).size());
+		//System.out.println("actions de politiques possibles : " + this.getAgent().getPolitique(_e).size());
 		//getAction renvoi null si _e absorbant
-		if(this.getAgent().getEnv().getActionsPossibles(_e) == null){
+		if(this.getAgent().getEnv().estAbsorbant()){
+			//System.out.println("top");
 			return null;
 		}
 		else{
@@ -55,7 +59,7 @@ public class StrategyGreedy extends StrategyExploration{
 
 	public void setEpsilon(double epsilon) {
 		//VOTRE CODE
-		
+		this.epsilon = epsilon;
 	}
 
 

@@ -47,10 +47,18 @@ public class QLearningAgent extends RLAgent{
 		//TODO
 		List<Action> res = new ArrayList<>();
 		Double valueMax = this.getValeur(e);
-		if(map.get(e) != null)
-			for (Map.Entry<Action, Double> entry : map.get(e).entrySet())
-				if (valueMax.equals(entry.getValue()))
+		if(map.get(e) != null) {
+			System.out.println("valeur max = " + valueMax);
+			for (Map.Entry<Action, Double> entry : map.get(e).entrySet()) {
+				if (entry.getValue().equals(valueMax)) {
 					res.add(entry.getKey());
+				}
+			}
+		}
+		else{
+			for(Action a : this.env.getActionsPossibles(e))
+				res.add(a);
+		}
 		return res;
 	}
 	
@@ -64,7 +72,7 @@ public class QLearningAgent extends RLAgent{
 			for(Double value : map.get(e).values())
 				if (res < value)
 					res = value;
-		return res;
+		return res < 0 ? 0.0 : res;
 		
 	}
 
