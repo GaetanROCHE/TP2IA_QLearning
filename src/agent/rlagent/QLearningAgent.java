@@ -45,20 +45,34 @@ public class QLearningAgent extends RLAgent{
 	@Override
 	public List<Action> getPolitique(Etat e) {
 		//TODO
-		List<Action> res = new ArrayList<>();
-		Double valueMax = this.getValeur(e);
-		if(map.get(e) != null) {
-			System.out.println("valeur max = " + valueMax);
+		List<Action> res = this.env.getActionsPossibles(e);
+		System.out.println("res : " + res);
+		Double valueMax = this.getValeurNeg(e);
+		if(map.get(e) != null && map.get(e).size() != 0) {
+			//System.out.println("valeur max = " + valueMax);
 			for (Map.Entry<Action, Double> entry : map.get(e).entrySet()) {
-				if (entry.getValue().equals(valueMax)) {
-					res.add(entry.getKey());
+				if (!entry.getValue().equals(valueMax)) {
+					res.remove(entry.getKey());
+					System.out.println("entry.getValue() :" + entry.getValue());
 				}
 			}
 		}
 		else{
 			for(Action a : this.env.getActionsPossibles(e)) {
-				res.add(a);
-				this.setQValeur(e,a,0);
+				//res.add(a);
+				//this.setQValeur(e,a,0);
+			}
+		}
+		if (res.size() == 0)
+		{
+			System.out.println("ERROR : getPolitique returned empty list :");
+			System.out.println("valueMax : " + valueMax);
+			System.out.println("this.env.getActionsPossibles(e) : " + this.env.getActionsPossibles(e));
+			for (Map.Entry<Action, Double> entry : map.get(e).entrySet()) {
+				if (entry.getValue().equals(valueMax)) {
+					System.out.println("entry.getValue() : " + entry.getValue());
+					System.out.println("entry.getKey() : " + entry.getKey());
+				}
 			}
 		}
 		return res;
@@ -74,6 +88,15 @@ public class QLearningAgent extends RLAgent{
 				if (res < value)
 					res = value;
 		return res < 0 ? 0.0 : res;
+	}
+	
+	public double getValeurNeg(Etat e) {
+		Double res = - Double.MAX_VALUE;
+		if(map.get(e) != null)
+			for(Double value : map.get(e).values())
+				if (res < value)
+					res = value;
+		return res;
 	}
 
 	/**
