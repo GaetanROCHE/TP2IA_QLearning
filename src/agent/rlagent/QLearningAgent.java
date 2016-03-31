@@ -56,12 +56,13 @@ public class QLearningAgent extends RLAgent{
 			}
 		}
 		else{
-			for(Action a : this.env.getActionsPossibles(e))
+			for(Action a : this.env.getActionsPossibles(e)) {
 				res.add(a);
+				this.setQValeur(e,a,0);
+			}
 		}
 		return res;
 	}
-	
 	/**
 	 * @return la valeur d'un etat
 	 */
@@ -73,7 +74,6 @@ public class QLearningAgent extends RLAgent{
 				if (res < value)
 					res = value;
 		return res < 0 ? 0.0 : res;
-		
 	}
 
 	/**
